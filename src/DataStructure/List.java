@@ -73,4 +73,9 @@ public interface List<E> {
 	 * @return 리스트에 요소가 없을 경우 {@code true}, 요소가 있을경우 {@code false}를 반환
 	 */
 	boolean isEmpty();
+	
+	/*
+	 * 리스트에 있는 요소를 모두 삭제
+	 */
+	public void clear();
 }
