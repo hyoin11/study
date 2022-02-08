@@ -17,7 +17,8 @@ public class Kakao22_k_binary {
 		String str = "";
 		for(String number : arr_num) {
 			if(number.equals("0") && str != "") {
-				Long prime = Long.parseLong(str);
+				Long prime = Long.parseLong(str);	
+				// int가 아닌 long형으로 사용하는 이유는 1 ≤ n ≤ 1,000,000 이기 때문(1,000,000을 2진수로 바꾸면 int로 허용할 수 있는 범위 초과)
 				if(isPrime(prime)) {
 					answer++;
 				}

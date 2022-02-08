@@ -68,6 +68,12 @@ public interface List<E> {
 	int indexOf(E value);
 	
 	/*
+	 * 리스트에 있는 요소의 개수를 반환
+	 * @return 리스트에 있는 요소 개수를 반환
+	 */
+	int size();
+	
+	/*
 	 * 리스트에 요소가 비어있는지를 반환
 	 * 
 	 * @return 리스트에 요소가 없을 경우 {@code true}, 요소가 있을경우 {@code false}를 반환
