@@ -157,7 +157,7 @@ public class ArrayList<E> implements List<E>, Cloneable {
 	 * 동등연산자(==)가 아니라 .equals()로 비교해야함
 	 */
 	@Override
-	public int indexOf(E value) {
+	public int indexOf(Object value) {
 		// index를 0 부터 탐색
 		
 		int i=0;
@@ -189,7 +189,7 @@ public class ArrayList<E> implements List<E>, Cloneable {
 	 * 요소가 존재하는지 안하는지를 반환
 	 */
 	@Override
-	public boolean contains(E value) {
+	public boolean contains(Object value) {
 		// 0이상이면 요소가 존재
 		if(indexOf(value) >= 0) {
 			return true;
@@ -227,7 +227,7 @@ public class ArrayList<E> implements List<E>, Cloneable {
 	}
 
 	@Override
-	public boolean remove(E value) {
+	public boolean remove(Object value) {
 		// 삭제하고자 하는 요소의 인덱스 찾기
 		int index = indexOf(value);
 		
@@ -285,7 +285,7 @@ public class ArrayList<E> implements List<E>, Cloneable {
 	@Override
 	public Object clone() throws CloneNotSupportedException {
 		// 새로운 객체 생성
-		ArrayList<?> cloneList = (ArrayList<?>)super.clone();	// super.clone() 자체가 생성자 비슷한 역할
+		ArrayList<?> cloneList = (ArrayList<?>) super.clone();	// super.clone() 자체가 생성자 비슷한 역할
 		
 		// 새로운 객체의 배열도 생성해주어야 함(객체는 얕은복사가 되기 때문)
 		cloneList.array = new Object[size];

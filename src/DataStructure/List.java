@@ -33,7 +33,7 @@ public interface List<E> {
 	 * @param value 리스트에서 삭제할 요소
 	 * @return 리스트에 삭제할 요소가 없거나 삭제에 실패할 경우 {@code false}를 반환, 성공할 경우 {@code true}를 반환
 	 */
-	boolean remove(E value);
+	boolean remove(Object value);
 	
 	/*
 	 * 리스트에 있는 특정 위치의 요소를 반환
@@ -57,7 +57,7 @@ public interface List<E> {
 	 * @param value 리스트에서 찾을 특정 요소 변수
 	 * @return 리스트에 특정 요소가 존재할 경우 {@code true}, 존재하지 않을 경우 {@code false}를 반환
 	 */
-	boolean contains(E value);
+	boolean contains(Object value);
 	
 	/*
 	 * 리스트에 특정 요소가 몇 번째 위치에 있는지를 반환
@@ -65,7 +65,7 @@ public interface List<E> {
 	 * @param value 리스트에서 위치를 찾을 요소 변수
 	 * @return 리스트에서 처음으로 요소와 일치하는 위치를 반환. 일히차는 요소가 없을 경우 -1을 반환
 	 */
-	int indexOf(E value);
+	int indexOf(Object value);
 	
 	/*
 	 * 리스트에 있는 요소의 개수를 반환
