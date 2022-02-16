@@ -6,29 +6,29 @@ import java.util.Collection;
 import java.util.LinkedList;
 import java.util.Queue;
 
-public class Friend {
-	private Collection<Friend> friends;
+public class SKP_Friend {
+	private Collection<SKP_Friend> friends;
 	private String email;
 	
-	public Friend(String email) {
+	public SKP_Friend(String email) {
 		this.email = email;
-		this.friends = new ArrayList<Friend>();
+		this.friends = new ArrayList<SKP_Friend>();
 	}
 	
 	public String getEmail() {
 		return email;
 	}
 	
-	public Collection<Friend> getFriends(){
+	public Collection<SKP_Friend> getFriends(){
 		return friends;
 	}
 	
-	public void addFriendship(Friend friend) {
+	public void addFriendship(SKP_Friend friend) {
 		friends.add(friend);
 		friend.getFriends().add(this);
 	}
 	
-	public boolean canBeConnected(Friend friend) {
+	public boolean canBeConnected(SKP_Friend friend) {
 		String myEmail = this.getEmail();
 		
 		String friendEmail = friend.email;
@@ -36,7 +36,7 @@ public class Friend {
 		boolean[] visited = new boolean['Z'+1-65];
 		visited[friendEmail.charAt(0)-65] = true;
 		
-		Queue<Friend> que = new LinkedList<>();
+		Queue<SKP_Friend> que = new LinkedList<>();
 		que.add(friend);
 		
 //		Collection<Friend> test = friend.getFriends();
@@ -45,10 +45,10 @@ public class Friend {
 //		}
 		
 		while(!que.isEmpty()) {
-			Friend nextFriend = que.poll();
+			SKP_Friend nextFriend = que.poll();
 			
-			Collection<Friend> friendList = nextFriend.getFriends();
-			for(Friend friend2 : friendList) {
+			Collection<SKP_Friend> friendList = nextFriend.getFriends();
+			for(SKP_Friend friend2 : friendList) {
 				String nextFriendEmail = friend2.getEmail();
 				
 				if(!visited[nextFriendEmail.charAt(0)-65]) {
@@ -65,9 +65,9 @@ public class Friend {
 	}
 	
 	public static void main(String[] args) {
-		Friend a = new Friend("A");
-		Friend b = new Friend("B");
-		Friend c = new Friend("C");
+		SKP_Friend a = new SKP_Friend("A");
+		SKP_Friend b = new SKP_Friend("B");
+		SKP_Friend c = new SKP_Friend("C");
 //		Friend d = new Friend("D");
 		
 		a.addFriendship(b);

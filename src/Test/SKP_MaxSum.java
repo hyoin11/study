@@ -4,7 +4,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-public class MaxSum {
+public class SKP_MaxSum {
 	public static int findMaxSum(List<Integer> list) {
 		Collections.sort(list);
 		
