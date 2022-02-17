@@ -1,5 +1,7 @@
 package DataStructure;
 
+import java.util.Arrays;
+
 public class HashSet<E> implements Set<E> {
 	/*
 	 * Hash란
@@ -217,5 +219,198 @@ public class HashSet<E> implements Set<E> {
 		table = null;
 		table = newTable;	// 새로 생성한 table을 table변수에 연결
 	}
+	/*
+	 * resize()
+	 * 주의할 점이 있다면 새로운 테이블에 변수를 담을 때 new HashNode<E>(value.hash, value.key, null) 이런식으로 담으면 안됨
+	 * 만약 사용자 클래스에서 hashCode()를 오버라이드를 정확하게 해준다면 문제가 안되지만, 그러지 않고 했을 경우 기본적으로 메모리 주소에 대한 해싱 값을 반환함
+	 * 즉, value자체에 담고 있던 hash값과 new HashNode()로 생성된 새로운 노드는 내용은 같을지라도 hashCode()값은 달라져버림
+	 * 그렇기 때문에 value가 참조하고 있는 Node 자체를 담는 것이 안전함
+	 * 대신에 고려해주어야 할 부분은 value를 그대로 연결시키기 때문에 value에 연결되어있는 next노드 또한 그대로 딸려와버리는 문제가 발생할 수 있음
+	 * 지금 재배치 되는 idx값이 다음 노드와 같다면 다행이 문제는 없겠지만, 같은 인덱스에 배치될 것이란 보장이 없기에 넣기 전에 미리 value.next 연결 링크를 끊고 넣어주어 정상적으로 연결되도록 하는 것이 좋음
+	 */
 	
+	/*
+	 * remove()
+	 * 삽입할 때 기존의 요소와 중복되는지를 검색했던 방식 그대로 하면 됨
+	 * 다만 마지막에 원소를 추가하는 것이 아닌 삭제를 해줌
+	 * 	1. key로 받은 데이터를 보조해시 함수를 돌려 hash값을 얻어냄
+	 * 	2. hash 값을 토대로 index를 구한 뒤 원소를 탐색함
+	 * 	3. 해당 위치에 원소가 존재할 경우 해당 Node부터 연결 된 노드의 끝까지 탐색하면서 key가 같은지 비교
+	 * 	4. 해당 노드의 링크를 끊어줌(앞 노드와 node.next를 연결)
+	 */
+	@Override
+	public boolean remove(Object o) {
+		// null이 아니라는 것은 노드가 삭제되었다는 의미
+		return remove(hash(o), 0) != null;
+	}
+	
+	private Object remove(int hash, Object key) {
+		int idx = hash % table.length;
+		
+		HashNode<E> node = table[idx];
+		HashNode<E> removedNode = null;
+		HashNode<E> prev = null;
+		
+		if(node == null) return null;
+		
+		while(node != null) {
+			// 같은 노드를 찾았다면
+			if(node.hash == hash && (node.key == key || node.key.equals(key))) {
+				removedNode = node;	// 삭제되는 노드를 반환하기 위해 담아둠
+				
+				// 해당 노드의 이전 노드가 존재하지 않을 경우(=head 노드 인 경우)
+				if(prev == null) {
+					table[idx] = node.next;
+					node = null;
+				}
+				// 그 외엔 이전 노드의 next를 삭제할 노드의 다음 노드와 연결해줌
+				else {
+					prev.next = node.next;
+					node = null;
+				}
+				
+				size--;
+				break;	// 삭제되었기 때문에 탐색 종료
+			}
+			prev = node;
+			node = node.next;
+		}
+		
+		return removedNode;
+	}
+	
+	@Override
+	public int size() {
+		return size;
+	}
+	
+	@Override
+	public boolean isEmpty() {
+		return size == 0;
+	}
+	
+	@Override
+	public boolean contains(Object o) {
+		int idx = hash(o) % table.length;
+		HashNode<E> temp = table[idx];
+		
+		/*
+		 * 같은 객체 내용이어도 hash 값은 다를 수 있음
+		 * 하지만, 내용이 같은지를 알아보고 싶을 때 씨는 메소드이기에 hash값은 따로 비교 안해주어도 큰 지장 없음
+		 * 단, o가 null인지는 확인해야함
+		 */
+		while(temp != null) {
+			// 같은 객체를 찾았을 경우 true 리턴
+			if(o == temp.key || (o != null && (o.equals(temp.key)))) return true;
+			
+			temp = temp.next;
+		}
+		
+		return false;
+	}
+	
+	@Override
+	public void clear() {
+		if(table != null && size > 0) {
+			for(int i=0; i<table.length; i++) {
+				table[i] = null;	// 모든 노드를 삭제함
+			}
+			size = 0;
+		}
+	}
+	
+	@SuppressWarnings("unchecked")
+	@Override
+	public boolean equals(Object o) {
+		// 만약 파라미터 객체가 현재 객체와 동일한 객체라면 true
+		if(o == this) return true;
+		
+		// 만약 o객체가 hashSet이 아닌경우 False
+		if(!(o instanceof HashSet)) return false;	// object instanceof type -> 오브젝트가 타입이거나 타입을 상속받는 클래스라면 true를 리턴
+		
+		HashSet<E> oSet;
+		
+		/*
+		 * Object로부터 HashSet<E>로 캐스팅 되어야 비교가 가능하기 때문에 만약 캐스팅이 불가능할 경우 ClassCastException이 발생
+		 * 이 경우 false를 리턴하도록 try-catch문을 사용
+		 */
+		try {
+			// HashSet 타입으로 캐스팅
+			oSet = (HashSet<E>) o;
+			
+			// 사이즈(요소 개수)가 다르다는 것은 명백히 다른 객체임
+			if(oSet.size != size) return false;
+			
+			for(int i=0; i<oSet.table.length; i++) {
+				HashNode<E> oTable = oSet.table[i];
+				
+				while(oTable != null) {
+					// 서로 capacity가 다를 수 있기 때문에 index에 연결된 원소들을 비교하는 것이 아닌 contains로 원소의 존재 여부를 확인
+					if(!contains(oTable)) return false;
+					
+					oTable = oTable.next;
+				}
+			}
+		}catch(ClassCastException e) {
+			return false;
+		}
+		
+		// 위 검사가 모두 완료되면 같은 객체임이 증명됨
+		return true;
+	}
+	
+	// 조금 더 많은 기능을 원할 경우 추가해주면 좋은 메소드
+	/*
+	 * toArray()
+	 * - 아무런 인자 없이 현재 있는 HashSet 요소들을 객체배열(Object[])로 반환
+	 * - 이미 생성 도니 다른 배열에 복사해주고자 할 때 쓰는 T[] toArray(T[] a)
+	 * 
+	 * 차이
+	 * HashSet<Integer> hashSet = new HashSet<>();
+	 * 
+	 * - get HashSet to array (using toArray())
+	 * Object[] s1 = hashSet.toArray();
+	 * 
+	 * - get HashSet to array (using toArray(T[] a))
+	 * Integer[] s2 = new Integer[10];
+	 * s2 = hashSet.toArray(s2);
+	 * 
+	 * 1번의 장점이라면 해시 셋에 있는 요소의 수만큼 정확하게 배열의 크기가 할당되어 반환됨
+	 * 2번의 장점이라면 객체 클래스로 상속관게에 있는 타입이거나 래퍼와 같이 데이터 타입을 유연하게 캐스팅할 여지가 있음
+	 * 다만, 주의해야할 점은 해시셋은 연속된 상태가 아니기 때문에 인덱스 순으로 탐색하면서 해당 인덱스에 연결된 노드들을 모두 탐색해서 차례대로 넣어줄 수 있도록 해야함
+	 */
+	public Object[] toArray() {
+		if(table == null) return null;
+		
+		Object[] ret = new Object[size];
+		int index = 0;	// 인덱스 변수를 따로 둠
+		
+		for(int i=0; i<table.length; i++) {
+			HashNode<E> node = table[i];
+			
+			// 해당 인덱스에 연결 된 모든 노드를 하나씩 담음
+			while(node != null) {
+				ret[index] = node.key;
+				index++;
+				node = node.next;
+			}
+		}
+		
+		return ret;
+	}
+	
+	@SuppressWarnings("unchecked")
+	public <T> T[] toArray(T[] a) {
+		Object[] copy = toArray();	// toArray() 통해 먼저 배열을 얻음
+		
+		// 들어온 배열이 copy 된 요소 개수보다 작을 경우 size에 맞게 늘려주면서 복사
+		if(a.length < size) {
+			return (T[]) Arrays.copyOf(copy, size, a.getClass());
+		}
+		
+		// 그 외에는 copy 배열을 a에 0번째부터 채움
+		System.arraycopy(copy, 0, a, 0, size);
+		
+		return a;
+	}
 }
