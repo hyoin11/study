@@ -1,6 +1,6 @@
 package Java;
 
-public class a6_Java8Changes {
+public class a06_Java8Changes {
 	/*
 	 * JAVA8 변경사항
 	 * 1. 람다 표현식(lambda expression) : 함수형 프로그래밍

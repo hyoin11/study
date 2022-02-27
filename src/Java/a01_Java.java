@@ -1,6 +1,6 @@
 package Java;
 
-public class a1_Java {
+public class a01_Java {
 	/*
 	 * java
 	 * 객체지향 언어로 개발된 프로그래밍 언어

@@ -1,6 +1,6 @@
 package Java;
 
-public class a8_Constant {
+public class a08_Constant {
 	/*
 	 * 상수
 	 * 변수와 마찬가지로 데이터를 저장할 수 있는 메모리 공간을 의미

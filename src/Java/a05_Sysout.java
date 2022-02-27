@@ -1,6 +1,6 @@
 package Java;
 
-public class a5_Sysout {
+public class a05_Sysout {
 	/*
 	 * 자바 표준 입출력 클래스
 	 * 자바에서는 입출력을 담당하는 수단 또한 모두 객체

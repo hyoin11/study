@@ -1,6 +1,6 @@
 package Java;
 
-public class a7_Variable {
+public class a07_Variable {
 	/*
 	 * 변수
 	 * 데이터를 저장하기 위해 프로그램에 의해 이름을 할당받은 메모리 공간을 의미

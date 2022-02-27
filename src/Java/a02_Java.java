@@ -1,6 +1,6 @@
 package Java;
 
-public class a2_Java {
+public class a02_Java {
 	/*
 	 * 자바란?
 	 * 객체 지향 언어로 개발된 프로그래밍 언어

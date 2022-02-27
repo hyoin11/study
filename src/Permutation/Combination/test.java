@@ -18,6 +18,14 @@ public class test {
 		
 		CombinationWithRepetition comb2 = new CombinationWithRepetition(3, 2);
 		comb2.combinationWithRepetition(arr, 0);
+		ArrayList<ArrayList<Integer>> result = comb2.getCombinationWithRepetition();
+		
+		for(int i=0; i<result.size(); i++) {
+			for(int j=0; j<result.get(i).size(); j++) {
+				System.out.print(result.get(i).get(j) + " ");
+			}
+			System.out.println();
+		}
 		
 //		Permutation per = new Permutation(3, 1);
 //		per.permutation(arr, 0);

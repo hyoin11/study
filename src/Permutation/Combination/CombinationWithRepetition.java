@@ -22,12 +22,24 @@ public class CombinationWithRepetition {
 	public CombinationWithRepetition(int n, int r) {
 		this.n = n;
 		this.r = r;
-		this.output = new int[n];
+		this.output = new int[r];
 		this.visited = new boolean[n];
 		this.result = new ArrayList<>();
 	}
 	
 	public void combinationWithRepetition(int[] arr, int depth) {
+		if(depth == r) {
+			ArrayList<Integer> temp = new ArrayList<>();
+			for(int num : output) {
+				temp.add(num);
+			}
+			result.add(temp);
+			return;
+		}
 		
+		for(int i=0; i<arr.length; i++) {
+			output[depth] = arr[i];
+			combinationWithRepetition(arr, depth+1);
+		}
 	}
 }

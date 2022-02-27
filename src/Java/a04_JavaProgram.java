@@ -1,6 +1,6 @@
 package Java;
 
-public class a4_JavaProgram {
+public class a04_JavaProgram {
 	/*
 	 * 간단한 자바 프로그램
 	 * 자바 프로그램은 한 개 이상의 클래스로 구성됨

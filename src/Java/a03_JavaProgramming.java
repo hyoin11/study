@@ -1,6 +1,6 @@
 package Java;
 
-public class a3_JavaProgramming {
+public class a03_JavaProgramming {
 	/*
 	 * 자바 프로그램의 실행 과정
 	 * 	컴파일 타임 환경
