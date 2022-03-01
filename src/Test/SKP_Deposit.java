@@ -13,9 +13,7 @@ public class SKP_Deposit {
 	public static int[] solution(int[] deposit) {
 		Stack<Integer> stack = getDepositStack(deposit);
 
-        int[] answer = getAnswer(stack);
-        
-        return answer;
+        return getArray(stack);
 	}
 	
 	public static Stack<Integer> getDepositStack(int[] deposit){
@@ -39,7 +37,7 @@ public class SKP_Deposit {
 		return stack;
 	}
 	
-	public static int[] getAnswer(Stack<Integer> stack) {
+	public static int[] getArray(Stack<Integer> stack) {
 		int[] answer = new int[stack.size()];
 		int i = 1;
 		while(!stack.isEmpty()) {

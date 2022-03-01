@@ -6,9 +6,10 @@ import java.util.List;
 
 public class SKP_MaxSum {
 	public static int findMaxSum(List<Integer> list) {
+		int largest_sum = 0;
+
 		Collections.sort(list);
 		
-		int largest_sum = 0;
 		for(int i=list.size()-1; i>=list.size()-2; i--) {
 			largest_sum += list.get(i);
 		}
